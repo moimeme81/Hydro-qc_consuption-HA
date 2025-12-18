@@ -1,0 +1,10 @@
+{
+  "domain": "hydro_quebec_evenements",
+  "name": "Hydro-Québec – Événements de pointe",
+  "version": "0.1.0",
+  "documentation": "https://donnees.hydroquebec.com",
+  "requirements": [],
+  "codeowners": [],
+  "iot_class": "cloud_polling",
+  "config_flow": true
+}
