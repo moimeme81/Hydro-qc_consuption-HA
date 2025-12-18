@@ -1,4 +1,4 @@
-DOMAIN = "hydro_quebec_evenements"
+DOMAIN = "hydro_quebec_consommation"
 
 API_URL = (
     "https://donnees.hydroquebec.com/api/explore/v2.1/"
@@ -6,4 +6,4 @@ API_URL = (
 )
 
 DEFAULT_LIMIT = 24
-DEFAULT_SCAN_INTERVAL = 3600  # seconds
+DEFAULT_SCAN_INTERVAL = 3600
