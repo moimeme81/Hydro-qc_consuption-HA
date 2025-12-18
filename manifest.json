@@ -1,10 +1,9 @@
 {
-  "domain": "hydro_quebec_evenements",
-  "name": "Hydro-Québec – Événements de pointe",
-  "version": "0.1.0",
+  "domain": "hydro_quebec_consommation",
+  "name": "Hydro-Québec – Consommation d’énergie",
+  "version": "0.2.1",
   "documentation": "https://donnees.hydroquebec.com",
-  "requirements": [],
-  "codeowners": [],
+  "config_flow": true,
   "iot_class": "cloud_polling",
-  "config_flow": true
+  "requirements": []
 }
