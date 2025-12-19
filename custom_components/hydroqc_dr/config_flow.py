@@ -1,13 +1,10 @@
 
-from __future__ import annotations
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.const import CONF_SCAN_INTERVAL
-from .const import DOMAIN, DEFAULT_UPDATE_INTERVAL
-
-CONF_POSTE = "poste"
+from .const import DOMAIN, DEFAULT_UPDATE_INTERVAL, CONF_POSTE
 
 class HydroQcDrConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
