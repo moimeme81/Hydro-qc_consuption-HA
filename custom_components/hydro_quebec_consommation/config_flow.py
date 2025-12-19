@@ -12,7 +12,7 @@ class HydroQuebecConsommationConfigFlow(config_entries.ConfigFlow):
     async def async_step_user(self, user_input=None):
         if user_input is not None:
             return self.async_create_entry(
-                title="Hydro-Québec – Consommation d’énergie",  # ✅ Use static or translated title
+                title="Hydro-Québec – Consommation d’énergie",
                 data={},
             )
 
