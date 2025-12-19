@@ -6,7 +6,7 @@ from .const import DOMAIN
 class HydroQuebecConsommationConfigFlow(config_entries.ConfigFlow):
     """Handle a config flow for Hydro-Québec Consommation."""
 
-    domain = DOMAIN  # ✅ Correct placement
+    domain = DOMAIN  
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
