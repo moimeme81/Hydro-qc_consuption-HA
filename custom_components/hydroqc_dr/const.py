@@ -1,9 +1,9 @@
-DOMAIN = "hydro_quebec_consommation"
 
-API_URL = (
+DOMAIN = "hydroqc_dr"
+
+BASE_URL = (
     "https://donnees.hydroquebec.com/api/explore/v2.1/"
     "catalog/datasets/consommation-clients-evenements-pointe/records"
 )
 
-DEFAULT_LIMIT = 24
-DEFAULT_SCAN_INTERVAL = 3600
+DEFAULT_UPDATE_INTERVAL = 900  # seconds (15 min)
