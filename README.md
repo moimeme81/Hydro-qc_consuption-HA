@@ -1,4 +1,5 @@
 # Hydro-Québec – Consommation d’énergie
+# WORK IN PROGRESS --- ONGOING TEST
 
 ![hacs_badge](https://img.shields.io/badge/HACS-Cntegration retrieves energy consumption and peak event data from Hydro-Québec's open data API.
 
