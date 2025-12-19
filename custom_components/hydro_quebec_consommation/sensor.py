@@ -44,7 +44,6 @@ class HydroQuebecConsumptionSensor(HydroQuebecBaseSensor):
     def native_value(self):
         if not self.coordinator.data:
             return None
-        # Assuming API returns 'consommation_kWh' in each record
         return self.coordinator.data[0].get("consommation_kWh")
 
     @property
@@ -68,7 +67,6 @@ class HydroQuebecPeakEventSensor(HydroQuebecBaseSensor):
     def native_value(self):
         if not self.coordinator.data:
             return None
-        # Example: check if latest record indicates a peak event
         return "Oui" if self.coordinator.data[0].get("evenement_pointe") else "Non"
 
     @property
