@@ -31,7 +31,7 @@ CONF_POSTE = "poste"
 SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
     SensorEntityDescription(
         key="energie_totale_consommee",
-        name="HydroQC DR Energy Total",
+        name="Total consumed energy",
         device_class=SensorDeviceClass.ENERGY,
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         state_class="measurement",
@@ -39,37 +39,37 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
     ),
     SensorEntityDescription(
         key="temperature_interieure_moyenne",
-        name="HydroQC DR Inside Temperature",
+        name="Average inside temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
     SensorEntityDescription(
         key="temperature_exterieure_moyenne",
-        name="HydroQC DR Outside Temperature",
+        name="Average outside temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
     SensorEntityDescription(
         key="humidite_relative_moyenne",
-        name="HydroQC DR Relative Humidity",
+        name="Average relative humidity",
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
     ),
     SensorEntityDescription(
         key="irradiance_solaire_moyenne",
-        name="HydroQC DR Solar Irradiance",
+        name="Average solar irradiance",
         native_unit_of_measurement="W/m²",
         icon="mdi:white-balance-sunny",
     ),
     SensorEntityDescription(
         key="vitesse_vent_moyenne",
-        name="HydroQC DR Wind Speed",
+        name="Average wind speed",
         device_class=SensorDeviceClass.WIND_SPEED,
         native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
     ),
     SensorEntityDescription(
         key="indicateur_evenement",
-        name="HydroQC DR Event Indicator",
+        name="HEvent indicator",
         icon="mdi:alert",
     ),
 )
