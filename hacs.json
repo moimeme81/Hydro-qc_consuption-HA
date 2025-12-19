@@ -1,0 +1,9 @@
+{
+  "name": "Hydro Québec Consommation",
+  "content_in_root": false,
+  "domains": ["sensor"],
+  "zip_release": false,
+  "filename": "custom_components/hydro_quebec_consommation",
+  "issue_tracker": true,
+  "render_readme": true
+}
