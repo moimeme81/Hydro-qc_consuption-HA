@@ -1,0 +1,11 @@
+
+{
+  "domain": "hydroqc_dr",
+  "name": "Hydro-Québec Demand Response (Open Data)",
+  "version": "0.1.0",
+  "documentation": "https://donnees.hydroquebec.com/explore/dataset/consommation-clients-evenements-pointe/",
+  "iot_class": "cloud_polling",
+  "requirements": [],
+  "codeowners": ["@yourgithub"],
+  "config_flow": true
+}
