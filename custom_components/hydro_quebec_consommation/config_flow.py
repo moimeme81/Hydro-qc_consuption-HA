@@ -3,17 +3,16 @@ from homeassistant import config_entries
 from homeassistant.core import callback
 from .const import DOMAIN
 
-class HydroQuebecConsommationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class HydroQuebecConsommationConfigFlow(config_entries.ConfigFlow):
     """Handle a config flow for Hydro-Québec Consommation."""
 
+    domain = DOMAIN  # ✅ Correct placement
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
         if user_input is not None:
             return self.async_create_entry(
-                title=self.hass.helpers.translation.async_translate(
-                    "config.step.user.title", DOMAIN
-                ),
+                title="Hydro-Québec – Consommation d’énergie",  # ✅ Use static or translated title
                 data={},
             )
 
