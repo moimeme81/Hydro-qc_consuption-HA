@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 import asyncio
 import logging
 from datetime import timedelta
@@ -9,68 +7,57 @@ from typing import Any, Dict, Optional
 import async_timeout
 from aiohttp.client_exceptions import ClientError
 
-from homeassistant.components.sensor import SensorEntity, SensorDeviceClass, SensorEntityDescription
-from homeassistant.const import (
-    UnitOfTemperature,
-    UnitOfEnergy,
-    UnitOfSpeed,
-    PERCENTAGE,
-)
+from homeassistant.components.sensor import SensorEntity, SensorDeviceClass, SensorEntityDescription, SensorStateClass
+from homeassistant.const import UnitOfTemperature, UnitOfEnergy, UnitOfSpeed, PERCENTAGE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.device_registry import DeviceEntryType
 
-from .const import DOMAIN, BASE_URL
+from .const import DOMAIN, BASE_URL, CONF_POSTE
 from homeassistant.const import CONF_SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
-CONF_POSTE = "poste"
-
 SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
     SensorEntityDescription(
         key="energie_totale_consommee",
-        name="Total consumed energy",
+        name="Energy Total",
         device_class=SensorDeviceClass.ENERGY,
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
-        state_class="measurement",
+        state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:lightning-bolt",
     ),
     SensorEntityDescription(
         key="temperature_interieure_moyenne",
-        name="Average inside temperature",
+        name="Inside Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
     SensorEntityDescription(
         key="temperature_exterieure_moyenne",
-        name="Average outside temperature",
+        name="Outside Temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
     SensorEntityDescription(
         key="humidite_relative_moyenne",
-        name="Average relative humidity",
+        name="Relative Humidity",
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
     ),
     SensorEntityDescription(
         key="irradiance_solaire_moyenne",
-        name="Average solar irradiance",
+        name="Solar Irradiance",
         native_unit_of_measurement="W/m²",
         icon="mdi:white-balance-sunny",
     ),
     SensorEntityDescription(
         key="vitesse_vent_moyenne",
-        name="Average wind speed",
+        name="Wind Speed",
         device_class=SensorDeviceClass.WIND_SPEED,
         native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
-    ),
-    SensorEntityDescription(
-        key="indicateur_evenement",
-        name="HEvent indicator",
-        icon="mdi:alert",
     ),
 )
 
@@ -81,10 +68,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     coordinator = HydroQcDrCoordinator(hass, poste, scan_interval)
     await coordinator.async_config_entry_first_refresh()
 
-    entities = [
-        HydroQcDrSensor(coordinator, desc, poste)
-        for desc in SENSOR_DESCRIPTIONS
-    ]
+    entities = [HydroQcDrSensor(coordinator, desc, poste) for desc in SENSOR_DESCRIPTIONS]
     async_add_entities(entities, update_before_add=True)
 
 class HydroQcDrCoordinator(DataUpdateCoordinator):
@@ -101,7 +85,7 @@ class HydroQcDrCoordinator(DataUpdateCoordinator):
         session = async_get_clientsession(self.hass)
         params = {
             "limit": "1",
-            "order_by": "horodatage_local desc",  # latest record first
+            "order_by": "horodatage_local desc",
             "where": f'poste="{self._poste}"',
         }
         try:
@@ -115,7 +99,6 @@ class HydroQcDrCoordinator(DataUpdateCoordinator):
         if not results:
             raise UpdateFailed("No results returned for the selected poste.")
 
-        # Return the first record (latest hour)
         return results[0]
 
 class HydroQcDrSensor(SensorEntity):
@@ -124,15 +107,18 @@ class HydroQcDrSensor(SensorEntity):
         self.entity_description = description
         self._attr_has_entity_name = True
         self._attr_unique_id = f"hydroqc_dr_{poste}_{description.key}"
+        self._poste = poste
 
     @property
-    def name(self) -> Optional[str]:
-        base = self.entity_description.name
-        return f"{base} (poste {self.coordinator._poste})"
-
-    @property
-    def available(self) -> bool:
-        return self.coordinator.last_update_success
+    def device_info(self):
+        return {
+            "identifiers": {("hydroqc_dr", f"poste_{self._poste}")},
+            "name": f"Hydro-Québec DR (poste {self._poste})",
+            "manufacturer": "Hydro-Québec",
+            "model": "Open Data – Opendatasoft",
+            "entry_type": DeviceEntryType.SERVICE,
+            "configuration_url": "https://donnees.hydroquebec.com/explore/dataset/consommation-clients-evenements-pointe/",
+        }
 
     @property
     def native_value(self) -> Any:
@@ -148,9 +134,6 @@ class HydroQcDrSensor(SensorEntity):
             "heure_locale": record.get("heure_locale"),
             "type_evenement": record.get("type_evenement"),
             "clients_connectes": record.get("clients_connectes"),
-            "tstats_intelligents_connectes": record.get("tstats_intelligents_connectes"),
-            "poste": record.get("poste"),
-            "jour_semaine": record.get("jour_semaine"),
         }
 
     async def async_update(self) -> None:
